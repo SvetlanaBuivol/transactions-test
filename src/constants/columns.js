@@ -1,0 +1,1 @@
+export const columns = ["TransactionId", "Status", "Type", "ClientName", "Amount"]
