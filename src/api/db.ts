@@ -1,4 +1,4 @@
-import initSqlJs, { Database } from "sql.js";
+import initSqlJs, { Database } from "sql.js/dist/sql-wasm";
 import { ITransaction, TypeTransactionId } from "../types/transaction";
 
 export const initializeDatabase = async (): Promise<Database> => {
