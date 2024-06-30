@@ -18,10 +18,8 @@ const ExportButton: FC<ExportButtonProps> = ({
 
     let content = headers;
     transactions.forEach((transaction) => {
-      console.log("transactions.forEach  transaction", transaction);
       const rowData = selectedColumns.map((col) => {
         const value = transaction[col];
-        console.log(`Column: ${col}, Value: ${value}`);
         return value !== undefined ? value : "";
       });
 

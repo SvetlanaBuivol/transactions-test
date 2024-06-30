@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Stack } from "@mui/material";
-import { Database as SQLiteDatabase} from "sql.js/dist/sql-wasm";
+import { Database as SQLiteDatabase } from "sql.js/dist/sql-wasm";
 import Container from "../../components/Container/Container";
 import FilterColumn from "../../components/FilterColumn/FilterColumn";
 import { columns } from "../../constants/columns";
