@@ -1,15 +1,21 @@
-import { useEffect } from "react";
+import { FC, MouseEvent, ReactNode, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { Backdrop, ModalContent } from "./Modal.styled";
 
-export const Modal = ({ isOpen, onClose, children }) => {
-  const handleKeyDown = (event) => {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: ReactNode;
+}
+
+export const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
+  const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       onClose();
     }
   };
 
-  const handleBackdropClick = (event) => {
+  const handleBackdropClick = (event: MouseEvent<HTMLDivElement>) => {
     if (event.target === event.currentTarget) {
       onClose();
     }
@@ -23,12 +29,14 @@ export const Modal = ({ isOpen, onClose, children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [onClose]);
 
-  return isOpen
+  const modalRoot = document.getElementById("modal");
+
+  return isOpen && modalRoot
     ? createPortal(
         <Backdrop onClick={handleBackdropClick}>
           <ModalContent>{children}</ModalContent>
         </Backdrop>,
-        document.getElementById("modal")
+        modalRoot
       )
     : null;
 };

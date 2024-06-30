@@ -1,0 +1,1 @@
+export const columns: string[] = ["TransactionId", "Status", "Type", "ClientName", "Amount"]
