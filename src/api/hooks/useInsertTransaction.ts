@@ -1,9 +1,9 @@
 import { UseMutationResult, useMutation, useQueryClient } from "@tanstack/react-query"
 import { insertTransactions } from "../db"
-import { Database } from "sql.js"
+import { Database as SQLiteDatabase} from "sql.js/dist/sql-wasm";
 import { ITransaction } from "../../types/transaction"
 
-export const useInsertTransaction = (db: Database): UseMutationResult<void, unknown, ITransaction, unknown> => {
+export const useInsertTransaction = (db: SQLiteDatabase): UseMutationResult<void, unknown, ITransaction, unknown> => {
     const queryClient = useQueryClient()
 
     return useMutation<void, unknown, ITransaction, unknown>({

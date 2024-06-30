@@ -1,6 +1,6 @@
 import { FC, useState } from "react";
 import { Stack } from "@mui/material";
-import { Database } from "sql.js";
+import { Database as SQLiteDatabase} from "sql.js/dist/sql-wasm";
 import Container from "../../components/Container/Container";
 import FilterColumn from "../../components/FilterColumn/FilterColumn";
 import { columns } from "../../constants/columns";
@@ -16,7 +16,7 @@ import { IFilterValue } from "../../types/filter";
 import { ITransaction } from "../../types/transaction";
 
 interface TablePageProps {
-  db: Database;
+  db: SQLiteDatabase;
 }
 
 const TablePage: FC<TablePageProps> = ({ db }) => {

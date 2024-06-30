@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from "react";
-import { Database } from "sql.js";
+import { Database as SQLiteDatabase} from "sql.js/dist/sql-wasm";
 import { initializeDatabase } from "./api/db";
 import TablePage from "./pages/TablePage/TablePage";
 
 const App: FC = () => {
-  const [db, setDb] = useState<Database | null>(null);
+  const [db, setDb] = useState<SQLiteDatabase | null>(null);
 
   useEffect(() => {
     const loadDb = async () => {

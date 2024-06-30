@@ -1,7 +1,8 @@
-import initSqlJs, { Database } from "sql.js/dist/sql-wasm";
+import initSqlJs, { Database as SQLiteDatabase} from "sql.js/dist/sql-wasm";
 import { ITransaction, TypeTransactionId } from "../types/transaction";
+// import { Database } from "sql.js";
 
-export const initializeDatabase = async (): Promise<Database> => {
+export const initializeDatabase = async (): Promise<SQLiteDatabase> => {
   const SQL = await initSqlJs({
     locateFile: (file: string) => `https://sql.js.org/dist/${file}`,
   });
@@ -13,7 +14,7 @@ export const initializeDatabase = async (): Promise<Database> => {
 };
 
 export const insertTransactions = async (
-  db: Database,
+  db: SQLiteDatabase,
   transaction: ITransaction
 ): Promise<void> => {
   const { TransactionId, Status, Type, ClientName, Amount } = transaction;
@@ -31,7 +32,7 @@ export const insertTransactions = async (
   });
 };
 
-export const getTransactions = (db: Database): ITransaction[] => {
+export const getTransactions = (db: SQLiteDatabase): ITransaction[] => {
   const result = db.exec("SELECT * FROM transactions");
   return result[0].values.map((row: any[]) => ({
     TransactionId: row[0],
@@ -43,7 +44,7 @@ export const getTransactions = (db: Database): ITransaction[] => {
 };
 
 export const updateTransactionType = async (
-  db: Database,
+  db: SQLiteDatabase,
   TransactionId: TypeTransactionId,
   newType: string
 ): Promise<void> => {
@@ -61,7 +62,7 @@ export const updateTransactionType = async (
 };
 
 export const deleteTransaction = async (
-  db: Database,
+  db: SQLiteDatabase,
   TransactionId: TypeTransactionId
 ): Promise<void> => {
   return new Promise<void>((resolve, reject) => {

@@ -4,11 +4,11 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { updateTransactionType } from "../db";
-import { Database } from "sql.js";
+import { Database as SQLiteDatabase} from "sql.js/dist/sql-wasm";
 import { TypeTransactionId } from "../../types/transaction";
 
 export const useUpdateTransactionType = (
-  db: Database
+  db: SQLiteDatabase
 ): UseMutationResult<
   void,
   unknown,

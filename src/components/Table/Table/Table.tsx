@@ -1,5 +1,5 @@
 import { ChangeEvent, FC, MouseEvent, useState } from "react";
-import { Database } from "sql.js";
+import { Database as SQLiteDatabase} from "sql.js/dist/sql-wasm";
 import {
   useDeleteTransaction,
   useUpdateTransactionType,
@@ -12,7 +12,7 @@ import { ITransaction } from "../../../types/transaction";
 
 interface TableProps {
   transactions: ITransaction[];
-  db: Database;
+  db: SQLiteDatabase;
 }
 
 const Table: FC<TableProps> = ({ transactions, db }) => {
