@@ -1,4 +1,4 @@
-import { ChangeEvent, FC } from "react";
+import { FC, useEffect } from "react";
 import {
   Checkbox,
   FormControl,
@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import { columns } from "../../constants/columns";
 import { Box } from "./FilterColumn.styled";
+import { Controller, useForm } from "react-hook-form";
 
 const css = {
   "@media screen and (max-width: 1439px)": {
@@ -23,21 +24,23 @@ interface FilterColumnProps {
 }
 
 const FilterColumn: FC<FilterColumnProps> = ({ filter, onFilterChange }) => {
-  const handleColumnChange = (
-    event: ChangeEvent<HTMLInputElement>,
-    column: string
-  ) => {
-    const isChecked = event.target.checked;
-    if (isChecked) {
-      onFilterChange({
-        columns: [...filter.columns, column],
-      });
-    } else {
-      onFilterChange({
-        columns: filter.columns.filter((col) => col !== column),
-      });
-    }
-  };
+  const { control, watch } = useForm({
+    defaultValues: {
+      columns: filter.columns.reduce((acc, col) => {
+        acc[col] = true;
+        return acc;
+      }, {} as { [key: string]: boolean }),
+    },
+  });
+
+  const watchedColumns = watch("columns");
+
+  useEffect(() => {
+    const selectedColumns = Object.keys(watchedColumns).filter(
+      (col) => watchedColumns[col]
+    );
+    onFilterChange({ columns: selectedColumns });
+  }, [watchedColumns, onFilterChange]);
 
   return (
     <Box>
@@ -46,15 +49,19 @@ const FilterColumn: FC<FilterColumnProps> = ({ filter, onFilterChange }) => {
         <FormGroup sx={css}>
           {columns.map((col) => (
             <FormControlLabel
-              sx={{ marginRight: "10px", span: { padding: "4px" } }}
               key={col}
               control={
-                <Checkbox
-                  sx={{ m: 0 }}
-                  size="small"
-                  checked={filter.columns.includes(col)}
-                  onChange={(e) => handleColumnChange(e, col)}
-                  name={col}
+                <Controller
+                  name={`columns.${col}`}
+                  control={control}
+                  render={({ field }) => (
+                    <Checkbox
+                      {...field}
+                      sx={{ m: 0 }}
+                      size="small"
+                      checked={!!field.value}
+                    />
+                  )}
                 />
               }
               label={col}

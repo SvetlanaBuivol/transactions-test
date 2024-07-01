@@ -1,62 +1,75 @@
-import { FC, useState } from "react";
-import {
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-} from "@mui/material";
+import { FC, useEffect } from "react";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import { StyledForm } from "./FilterForm.styled";
 import { IFilterValue } from "../../types/filter";
+import { Controller, useForm, useWatch } from "react-hook-form";
 
 interface FilterFormProps {
   onFilterChange: (filterValues: Partial<IFilterValue>) => void;
 }
 
 const FilterForm: FC<FilterFormProps> = ({ onFilterChange }) => {
-  const [status, setStatus] = useState<string>("");
-  const [type, setType] = useState<string>("");
+  const { control } = useForm<IFilterValue>({
+    defaultValues: {
+      filterStatus: "",
+      filterType: "",
+    },
+  });
 
-  const handleStatusChange = (event: SelectChangeEvent<string>) => {
-    const statusValue = event.target.value as string;
-    onFilterChange({ filterStatus: statusValue });
-    setStatus(statusValue);
-  };
+  const filterStatus = useWatch({
+    control,
+    name: "filterStatus",
+  });
 
-  const handleTypeChange = (event: SelectChangeEvent<string>) => {
-    const typeValue = event.target.value as string;
-    onFilterChange({ filterType: typeValue });
-    setType(typeValue);
-  };
+  const filterType = useWatch({
+    control,
+    name: "filterType",
+  });
+
+  useEffect(() => {
+    onFilterChange({ filterStatus, filterType });
+  }, [filterStatus, filterType, onFilterChange]);
 
   return (
     <StyledForm>
       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-        <InputLabel id="demo-simple-select-label">Status</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={status}
-          label="Status"
-          onChange={handleStatusChange}
-        >
-          <MenuItem value="Pending">Pending</MenuItem>
-          <MenuItem value="Completed">Completed</MenuItem>
-          <MenuItem value="Cancelled">Cancelled</MenuItem>
-        </Select>
+        <InputLabel id="status-select-label">Status</InputLabel>
+        <Controller
+          name="filterStatus"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <Select
+              {...field}
+              labelId="status-select-label"
+              id="status-select"
+              label="Status"
+            >
+              <MenuItem value="Pending">Pending</MenuItem>
+              <MenuItem value="Completed">Completed</MenuItem>
+              <MenuItem value="Cancelled">Cancelled</MenuItem>
+            </Select>
+          )}
+        />
       </FormControl>
       <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
-        <InputLabel id="demo-simple-select-label">Type</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={type}
-          label="Type"
-          onChange={handleTypeChange}
-        >
-          <MenuItem value="Refill">Refill</MenuItem>
-          <MenuItem value="Withdrawal">Withdrawal</MenuItem>
-        </Select>
+        <InputLabel id="type-select-label">Type</InputLabel>
+        <Controller
+          name="filterType"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <Select
+              {...field}
+              labelId="type-select-label"
+              id="type-select"
+              label="Type"
+            >
+              <MenuItem value="Refill">Refill</MenuItem>
+              <MenuItem value="Withdrawal">Withdrawal</MenuItem>
+            </Select>
+          )}
+        />
       </FormControl>
     </StyledForm>
   );
