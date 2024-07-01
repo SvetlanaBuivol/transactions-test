@@ -13,6 +13,7 @@ const TransactionRow: FC<TransactionRowProps> = ({
   onEditClick,
   onDeleteClick,
 }) => {
+
   return (
     <tr>
       <td>{transaction.TransactionId}</td>

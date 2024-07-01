@@ -1,6 +1,5 @@
 import initSqlJs, { Database as SQLiteDatabase} from "sql.js/dist/sql-wasm";
 import { ITransaction, TypeTransactionId } from "../types/transaction";
-// import { Database } from "sql.js";
 
 export const initializeDatabase = async (): Promise<SQLiteDatabase> => {
   const SQL = await initSqlJs({
@@ -39,7 +38,7 @@ export const getTransactions = (db: SQLiteDatabase): ITransaction[] => {
     Status: row[1],
     Type: row[2],
     ClientName: row[3],
-    Amount: row[4],
+    Amount:  parseFloat(row[4].replace('$', '')),
   }));
 };
 

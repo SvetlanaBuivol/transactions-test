@@ -4,7 +4,8 @@ export interface ITransaction {
   Status: "Pending" | "Cmpleted" | "Cancelled";
   Type: "Refill" | "Withdrawal";
   ClientName: string;
-  Amount: string | number;
+  // Amount: string | number;
+  Amount: number;
 }
 
 export type TypeTransactionId = string | number;
